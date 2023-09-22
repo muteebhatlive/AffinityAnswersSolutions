@@ -12,6 +12,15 @@
 #### To make the program more precise and robust, you can incorporate a distance calculation API to check the proximity of the address to the provided PIN code location.
 
 
+## API EXECUTION SCREENSHOTS
+
+![Alt text](image.png)
+![Alt text](image-1.png)
+![Alt text](image-2.png)
+![Alt text](image-3.png)
+![Alt text](image-4.png)
+
+
 ## B. Find all the columns that can be used to connect the tables in the given database.
 
 #### table rfamseq: ncbi_id
@@ -20,3 +29,5 @@
 #### table clan_membership:  rfam_acc, clan_acc
 #### table clan:  clan_acc
 #### table full_region: rfam_acc, rfamseq_acc
+
+

@@ -20,11 +20,13 @@ def pincode(request):
             # Split the address by spaces
             address_list = address_without_commas.split()
             print('ADDRESS LIST: ',address_list)
+            district_state = address_list[-3]
+            print('DISTRICT: ',district_state)
             address_state = address_list[-2]
             print('ADDRESS_STATE', address_state)
             pincode = address_list[-1]
             print('PINCODE: ',pincode)
-            if len(pincode) == 6 and isinstance(pincode, (int)):
+            if is_numeric(pincode) and len(pincode) == 6:
                 api_url = f'https://api.postalpincode.in/pincode/{pincode}'
                 response = requests.get(api_url)
                 if response.status_code == 200:
@@ -51,8 +53,16 @@ def pincode(request):
                         }
                         print('STATE RESPONSE DATA: ', state_data)
                         
+                        district_names = [district__name["District"] for district__name in json_data[0]["PostOffice"]]
+                        
+                        district_data = {
+                            "district_names": district_names
+                        }
+                        print('DISTRICT RESPONSE DATA: ', district_data)
+                        
                         state_names_list = state_data.get('state_names')
                         post_names_list = post_data.get('post_office_names')
+                        district_names_list = district_data.get('district_names')
                         print(post_names_list)
                         
                         # Remove parentheses contents from each string encountered
@@ -60,7 +70,9 @@ def pincode(request):
 
                         # Print the cleaned list
                         print(cleaned_list)
-                        if address_state in state_names_list:
+                        print(type(address_state))
+                        print(type(district_names_list))
+                        if address_state in state_names_list or address_state in district_names_list:
                             print('Address State Exists in the Pincode')
                             if any(keyword in post_names_list for keyword in address_list):
                                 print("Post Office Match. Address corresponds to the pincode.")
@@ -81,6 +93,8 @@ def pincode(request):
 
                                         # Return the JSON response
                                 return JsonResponse(response_data)
+                    
+                                
                         else:
                             print('Address State Does Not Exist in the Pincode')
                             response_data = {
@@ -104,3 +118,6 @@ def pincode(request):
             return JsonResponse({"error": "API request failed"}, status=500)
     
         
+def is_numeric(input_str):
+    # Check if every character in the string is a digit
+    return all(char.isdigit() for char in input_str)
