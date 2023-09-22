@@ -1,7 +1,11 @@
 USE Rfam;
-SELECT COUNT(*) FROM taxonomy WHERE species like '%Panthera tigris%';
+SELECT COUNT(*) 
+FROM taxonomy 
+WHERE species LIKE '%Panthera tigris%';
 
-SELECT ncbi_id FROM taxonomy WHERE species like '%Panthera tigris sumatrae%';
+SELECT ncbi_id 
+FROM taxonomy 
+WHERE species LIKE '%Panthera tigris sumatrae%';
 
 SELECT t.ncbi_id, t.species, rs.length
 FROM taxonomy t
